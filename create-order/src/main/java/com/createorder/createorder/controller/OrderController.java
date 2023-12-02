@@ -9,11 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.createorder.createorder.service.OrderService;
 
+import io.micrometer.core.instrument.MeterRegistry;
+
 @RestController
 @RequestMapping("order")
 public class OrderController {
     @Autowired
     OrderService orderService;
+
+    private final MeterRegistry registry;
+
+    public OrderController(MeterRegistry registry) {
+        this.registry = registry;
+    }
     
     @PostMapping("/create")
     public ResponseEntity<String> createNewOrder(@RequestParam String username, 
@@ -22,6 +30,9 @@ public class OrderController {
                                                 @RequestParam Double price) 
     {
         orderService.CreateNewOrder(username, product, amount, price);
+
+        registry.counter("createdOrders.total", "username", username).increment();
+
         return ResponseEntity.ok().build();
     }
 }
