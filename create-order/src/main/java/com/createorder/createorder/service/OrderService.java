@@ -12,10 +12,11 @@ public class OrderService {
     @Autowired
     private OrderRepository createOrderRepository;
     
-    public void CreateNewOrder(String username, String product, Integer amount, Double price) {
+    public Order CreateNewOrder(String username, String product, Integer amount, Double price) {
         Order newOrder = new Order(username, product, amount, price * amount);
         newOrder.setStatus(OrderStatus.IN_PROGRESS);
 
         createOrderRepository.save(newOrder);
+        return newOrder;
     }
 }
