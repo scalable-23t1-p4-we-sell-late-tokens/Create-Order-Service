@@ -7,5 +7,5 @@ import com.createorder.createorder.model.Order;
 
 @Repository
 public interface OrderRepository extends CrudRepository<Order, String> {
-    
+    Order findOrderById(String id);
 }

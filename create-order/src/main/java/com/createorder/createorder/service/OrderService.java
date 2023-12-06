@@ -10,13 +10,20 @@ import com.createorder.createorder.repository.OrderRepository;
 @Service
 public class OrderService {
     @Autowired
-    private OrderRepository createOrderRepository;
+    private OrderRepository orderRepository;
     
     public Order CreateNewOrder(String username, String product, Integer amount, Double price) {
         Order newOrder = new Order(username, product, amount, price * amount);
         newOrder.setStatus(OrderStatus.IN_PROGRESS);
 
-        createOrderRepository.save(newOrder);
+        orderRepository.save(newOrder);
         return newOrder;
+    }
+
+    // Change the status of the order from the delivery service
+    public void changeStatus(String id, OrderStatus status) {
+        Order getOrder = orderRepository.findOrderById(id);
+        getOrder.setStatus(status);
+        orderRepository.save(getOrder);
     }
 }
