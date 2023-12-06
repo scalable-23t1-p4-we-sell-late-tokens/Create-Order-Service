@@ -2,7 +2,6 @@ package com.createorder.createorder.service;
 
 import org.springframework.stereotype.Service;
 
-import com.createorder.createorder.controller.OrderController;
 import com.createorder.createorder.model.Order;
 import com.createorder.createorder.model.OrderStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +28,7 @@ public class MessageSubscriber implements MessageListener {
         this.registry = registry;
     }
 
-    private final Logger LOG = LoggerFactory.getLogger(OrderController.class);
+    private final Logger LOG = LoggerFactory.getLogger(MessageSubscriber.class);
 
     public void onMessage(Message message, byte[] pattern) {
         String channel = new String(pattern);
