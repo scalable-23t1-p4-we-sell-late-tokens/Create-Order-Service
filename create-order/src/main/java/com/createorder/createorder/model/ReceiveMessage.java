@@ -7,6 +7,10 @@ import lombok.Setter;
 @Setter
 public class ReceiveMessage {
     String order_id;
+    String username;
+    Long amount;
+    String item_name;
+    Double price;
     OrderStatus message_flag;
     OrderStatus message_response;
 }
