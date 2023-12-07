@@ -2,7 +2,6 @@ package com.createorder.createorder.service;
 
 import org.springframework.stereotype.Service;
 
-import com.createorder.createorder.model.Order;
 import com.createorder.createorder.model.OrderStatus;
 import com.createorder.createorder.model.ReceiveMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,14 +67,19 @@ public class MessageSubscriber implements MessageListener {
         System.out.println("Message from payment service: " + message);
 
         try {
-            Order order = objectMapper.readValue(message, Order.class);
-            String id = order.getId();
-            OrderStatus status = order.getStatus();
+            ReceiveMessage rollback = objectMapper.readValue(message, ReceiveMessage.class);
+            String id = rollback.getOrder_id();
+            OrderStatus response = null;
+            if (rollback.getMessage_response().equals(OrderStatus.FORCED)) {
+                response = OrderStatus.FAILED;
+            } else {
+                response = rollback.getMessage_response();
+            }
 
-            LOG.error("Rollback from payment service for order " + id + " with error status " + status);
+            LOG.error("Rollback for order " + id + " with error status " + response);
             registry.counter("error.orders.total").increment();
 
-            orderService.changeStatus(id, status);
+            orderService.changeStatus(id, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

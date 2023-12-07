@@ -31,6 +31,14 @@ public class OrderService {
         return newOrder;
     }
 
+    public Order failCreateOrder(String username, String product, Integer amount, Double price) {
+        Order newOrder = new Order(username, product, amount, price);
+        newOrder.setStatus(OrderStatus.FAILED);
+        orderRepository.save(newOrder);
+
+        return newOrder;
+    }
+
     // send order progress to payment service
     public void publishToPayment(String id, String username, String product, Integer amount, Double price, String message_flag) {
         try {

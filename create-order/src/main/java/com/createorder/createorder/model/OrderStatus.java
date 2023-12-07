@@ -7,5 +7,8 @@ public enum OrderStatus {
     TIMEOUT,
     UNKNOWN,
     CANCLED,
-    IN_PROGRESS
+    IN_PROGRESS,
+    FORCED,
+    OUT_OF_STOCK,
+    ITEM_NOT_FOUND
 }
