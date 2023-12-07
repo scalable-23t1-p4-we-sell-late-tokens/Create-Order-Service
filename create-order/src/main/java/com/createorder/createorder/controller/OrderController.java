@@ -34,9 +34,10 @@ public class OrderController {
     public ResponseEntity<String> createNewOrder(@RequestParam String username, 
                                                 @RequestParam String product,
                                                 @RequestParam Integer amount, 
-                                                @RequestParam Double price) 
+                                                @RequestParam Double price,
+                                                @RequestParam String message_flag) 
     {
-        Order order = orderService.CreateNewOrder(username, product, amount, price);
+        Order order = orderService.CreateNewOrder(username, product, amount, price, message_flag);
 
         registry.counter("createdOrders.total", "username", username).increment();
 

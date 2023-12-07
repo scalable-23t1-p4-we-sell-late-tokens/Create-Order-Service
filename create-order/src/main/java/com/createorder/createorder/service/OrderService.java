@@ -21,23 +21,22 @@ public class OrderService {
 
     Jedis jedis = new Jedis("redis", 6379);
     
-    public Order CreateNewOrder(String username, String product, Integer amount, Double price) {
-        Order newOrder = new Order(username, product, amount, price * amount);
-        Double total = price * amount;
+    public Order CreateNewOrder(String username, String product, Integer amount, Double price, String message_flag) {
+        Order newOrder = new Order(username, product, amount, price);
         newOrder.setStatus(OrderStatus.IN_PROGRESS);
         orderRepository.save(newOrder);
 
-        publishToPayment(newOrder.getId(), username, product, amount, total);
+        publishToPayment(newOrder.getId(), username, product, amount, price, message_flag);
 
         return newOrder;
     }
 
     // send order progress to payment service
-    public void publishToPayment(String id, String username, String product, Integer amount, Double price) {
+    public void publishToPayment(String id, String username, String product, Integer amount, Double price, String message_flag) {
         try {
-            Message messageObject = new Message(id, username, product, amount, price);
+            Message messageObject = new Message(id, username, product, amount, price, message_flag);
             String message = objectMapper.writeValueAsString(messageObject);
-            jedis.publish("OrderToPayment", message);
+            jedis.publish("orderToPayment", message);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

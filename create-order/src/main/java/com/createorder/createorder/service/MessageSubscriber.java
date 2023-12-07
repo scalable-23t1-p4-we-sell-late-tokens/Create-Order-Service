@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.createorder.createorder.model.Order;
 import com.createorder.createorder.model.OrderStatus;
+import com.createorder.createorder.model.ReceiveMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -34,10 +35,10 @@ public class MessageSubscriber implements MessageListener {
         String channel = new String(pattern);
         String receivedMessage = new String(message.getBody());
 
-        if(channel.equals("delivery_status")) {
+        if(channel.equals("deliveryToOrder")) {
             fromDelivery(receivedMessage);
         }
-        if (channel.equals("payment_rollback")) {
+        if (channel.equals("paymentToOrder")) {
             paymentRollback(receivedMessage);
         }
     }
@@ -47,9 +48,11 @@ public class MessageSubscriber implements MessageListener {
         System.out.println("Message from delivery service: " + message);
 
         try {
-            Order order = objectMapper.readValue(message, Order.class);
-            String id = order.getId();
-            OrderStatus status = order.getStatus();
+            ReceiveMessage order = objectMapper.readValue(message, ReceiveMessage.class);
+            String id = order.getOrder_id();
+            OrderStatus status = order.getMessage_flag();
+            
+            System.out.println("message_flag: " + order.getMessage_flag());
 
             LOG.info("order " + id + " is successfully delivered");
             registry.counter("completed.orders.total").increment();

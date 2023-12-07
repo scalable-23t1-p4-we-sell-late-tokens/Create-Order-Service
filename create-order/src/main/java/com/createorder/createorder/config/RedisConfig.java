@@ -19,8 +19,8 @@ public class RedisConfig {
         container.setConnectionFactory(connectionFactory);
 
         List<ChannelTopic> channelTopics = Arrays.asList(
-                new ChannelTopic("delivery_status"),
-                new ChannelTopic("payment_rollback")
+                new ChannelTopic("deliveryToOrder"),
+                new ChannelTopic("paymentToOrder")
         );
 
         container.addMessageListener(messageSubscriber, channelTopics);
