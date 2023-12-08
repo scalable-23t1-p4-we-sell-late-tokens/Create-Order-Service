@@ -40,11 +40,18 @@ public class OpenTelemetryConfig {
     }
 
     // @Bean
+    // public OtlpHttpSpanExporter otlpHttpSpanExporter() {
+    //     return OtlpHttpSpanExporter.builder()
+    //             .setEndpoint("http://otel-collector:4317/v1/traces")
+    //             .build();
+    // }
+
+    // @Bean
     // LogRecordProcessor otelLogRecordProcessor() {
     //     return BatchLogRecordProcessor
     //             .builder(
     //                     OtlpGrpcLogRecordExporter.builder()
-    //                             .setEndpoint("http://localhost:4317")
+    //                             .setEndpoint("http://localhost:4318/v1/traces")
     //                             .build())
     //             .build();
     // }
