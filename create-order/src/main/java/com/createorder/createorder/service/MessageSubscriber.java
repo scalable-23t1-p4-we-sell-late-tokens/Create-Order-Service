@@ -7,6 +7,7 @@ import com.createorder.createorder.model.ReceiveMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public class MessageSubscriber implements MessageListener {
 
     private final Logger LOG = LoggerFactory.getLogger(MessageSubscriber.class);
 
+    @WithSpan
     public void onMessage(Message message, byte[] pattern) {
         String channel = new String(pattern);
         String receivedMessage = new String(message.getBody());

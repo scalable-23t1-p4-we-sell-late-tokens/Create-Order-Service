@@ -2,6 +2,13 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}
+			</pattern>
+		</encoder>
+	</appender>
     <appender name="OPEN_TELEMETRY"
                 class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
         <captureExperimentalAttributes>true</captureExperimentalAttributes>
